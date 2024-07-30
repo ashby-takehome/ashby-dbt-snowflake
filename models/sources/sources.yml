@@ -1,0 +1,22 @@
+version: 2
+sources:
+  - name: ASHBY
+    database: ASHBY_RAW
+    description: The records from Ashby recruiting system
+    tables:
+    - name: APPLICATIONS
+      description: The candidate's application details. One row per application per candidate.
+    - name: JOBS
+      description: The job details, including title, team, when the job was opened (and closed) and so on.
+    - name: SOURCES
+      description: Table that shows details about each source - e.g. LinkedIn or Indeed.
+    - name: SOURCE_TYPES
+      description: Table that maps individual sources to broad source type categories. One row per unique source.
+    - name: STAGE_GROUPS
+      description: Details on interview stages and stage group mappings. One row per interview plan stage per job.
+    - name: STAGE_TRANSITIONS
+      description: Timing details on when an application moves from one stage to another. One row per stage transition per application.
+    - name: TEAMS
+      description: Details on the “team” name.
+    - name: USERS
+      description: A collection of application users and metadata about activity status and permissions. These represent Ashby users within an organization.

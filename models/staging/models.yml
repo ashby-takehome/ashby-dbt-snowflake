@@ -1,0 +1,158 @@
+version: 2
+models:
+
+  - name: stg_applications
+    description: This model cleans and standardizes the application data from the source.
+    columns:
+      - name: application_id
+        description: Unique identifier for each application.
+      - name: organization_id
+        description: Identifier for the organization to which the application belongs.
+      - name: job_id
+        description: Identifier for the job associated with the application.
+      - name: candidate_id
+        description: Identifier for the candidate who submitted the application.
+      - name: current_interview_stage_id
+        description: Identifier for the current interview stage of the application.
+      - name: application_status
+        description: Status of the application (e.g., active, archived).
+      - name: source_id
+        description: Identifier for the source from which the application originated.
+      - name: last_activity_at
+        description: Timestamp of the last activity on the application.
+      - name: archive_reason_id
+        description: Identifier for the reason the application was archived, if applicable.
+      - name: application_created_at
+        description: Timestamp when the application was created.
+
+  - name: stg_jobs
+    description: This model cleans and standardizes the job data from the source.
+    columns:
+      - name: job_id
+        description: Unique identifier for each job.
+      - name: organization_id
+        description: Identifier for the organization to which the job belongs.
+      - name: job_title
+        description: Title of the job.
+      - name: is_confidential_flag
+        description: Flag indicating whether the job is confidential (true) or not (false).
+      - name: job_status
+        description: Status of the job (e.g., open, closed, etc.).
+      - name: job_category
+        description: Category of the job.
+      - name: job_function
+        description: Function or role of the job within the organization.
+      - name: team_id
+        description: Identifier for the team associated with the job.
+      - name: location_id
+        description: Identifier for the location associated with the job.
+      - name: employment_type
+        description: Type of employment (e.g., full-time, part-time).
+      - name: job_created_at
+        description: Timestamp when the job was created.
+
+  - name: stg_source_types
+    description: This model cleans and standardizes the source type data from the source.
+    columns:
+      - name: source_type_id
+        description: Unique identifier for each source type.
+      - name: organization_id
+        description: Identifier for the organization to which the source type belongs.
+      - name: source_type_title
+        description: Title of the source type.
+      - name: is_archived_flag
+        description: Flag indicating whether the source type is archived (true) or active (false).
+      - name: source_type_created_at
+        description: Timestamp when the source type was created.
+
+  - name: stg_sources
+    description: This model cleans and standardizes the source data from the source.
+    columns:
+      - name: source_id
+        description: Unique identifier for each source.
+      - name: organization_id
+        description: Identifier for the organization to which the source belongs.
+      - name: source_title
+        description: Title of the source.
+      - name: source_type_id
+        description: Identifier for the type of the source.
+      - name: is_archived_flag
+        description: Flag indicating whether the source is archived (true) or active (false).
+      - name: source_created_at
+        description: Timestamp when the source was created.
+
+  - name: stg_stage_groups
+    description: This model cleans and standardizes the stage group data from the source.
+    columns:
+      - name: stage_id
+        description: Unique identifier for each stage.
+      - name: organization_id
+        description: Identifier for the organization to which the stage belongs.
+      - name: is_archived_flag
+        description: Flag indicating whether the stage is archived (true) or active (false).
+      - name: stage_title
+        description: Title of the stage.
+      - name: stage_order
+        description: Order of the stage within the group.
+      - name: stage_type
+        description: Type of the stage.
+      - name: stage_group_id
+        description: Unique identifier for each stage group.
+      - name: stage_group_title
+        description: Title of the stage group.
+      - name: stage_group_order
+        description: Order of the stage group.
+      - name: stage_group_type
+        description: Type of the stage group.
+      - name: stage_created_at
+        description: Timestamp when the stage was created.
+
+  - name: stg_stage_transitions
+    description: This model cleans and standardizes the stage transition data from the source.
+    columns:
+      - name: stage_transition_id
+        description: Unique identifier for each stage transition.
+      - name: organization_id
+        description: Identifier for the organization to which the stage transition belongs.
+      - name: application_id
+        description: Identifier for the application associated with the stage transition.
+      - name: new_interview_stage_id
+        description: Identifier for the new interview stage entered.
+      - name: previous_interview_stage_id
+        description: Identifier for the previous interview stage exited.
+      - name: entered_stage_at
+        description: Timestamp when the stage was entered.
+      - name: left_stage_at
+        description: Timestamp when the stage was left (Null if stage is the current stage).
+      - name: stage_transition_created_at
+        description: Timestamp when the stage transition was created.
+
+  - name: stg_teams
+    description: This model cleans and standardizes the team data from the source.
+    columns:
+      - name: team_id
+        description: Unique identifier for each team.
+      - name: organization_id
+        description: Identifier for the organization to which the team belongs.
+      - name: team_name
+        description: Name of the team.
+      - name: parent_team_id
+        description: Identifier for the parent team, if applicable.
+      - name: is_archived_flag
+        description: Flag indicating whether the team is archived (true) or active (false).
+      - name: team_created_at
+        description: Timestamp when the team was created.
+
+  - name: stg_users
+    description: This model cleans and standardizes the user data from the source.
+    columns:
+      - name: user_id
+        description: Unique identifier for each user.
+      - name: organization_id
+        description: Identifier for the organization to which the user belongs.
+      - name: global_role
+        description: The global role of the user within the organization.
+      - name: is_enabled_flag
+        description: Flag indicating whether the user account is enabled (true) or disabled (false).
+      - name: user_created_at
+        description: Timestamp when the user account was created.
