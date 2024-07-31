@@ -1,8 +1,4 @@
-
-# Name your project! Project names should contain only lowercase characters
-# and underscores. A good package name should reflect your organization's
-# name or the intended use of these models
-name: 'my_new_project'
+name: 'ashby_snowflake'
 version: '1.0.0'
 config-version: 2
 
@@ -26,17 +22,33 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 
 # Configuring models
-# Full documentation: https://docs.getdbt.com/docs/configuring-models
-
-# In dbt, the default materialization for a model is a view. This means, when you run 
-# dbt run or dbt build, all of your models will be built as a view in your data platform. 
-# The configuration below will override this setting for models in the example folder to 
-# instead be materialized as tables. Any models you add to the root of the models folder will 
-# continue to be built as views. These settings can be overridden in the individual model files
-# using the `{{ config(...) }}` macro.
-
 models:
-  my_new_project:
-    # Applies to all files under models/example/
-    example:
-      +materialized: table
+  ashby_snowflake:
+   
+    # Applies to all files under models/staging/
+    staging:
+      # Materializes all models in staging folder as tables
+      materialized: table
+      # Persist all models in staging folder in the dbt_staging schema on Snowflake
+      # The "STAGING" word is added to the `DEV_DBT` and `DBT` schema names that are defined for Dev and Prod environments, respectively
+      +schema: STAGING
+      # Applying a "staging" tag to be used by resource selection syntax - e.g. dbt run --select tag:staging
+      +tags: staging
+      # Setting custom colors for staging nodes (models) for cleaner representation on DAGs
+      +docs:
+        node_color: "#D4AC0D"
+    
+    # Apply similar configurations for the "mart" models
+    mart:
+      materialized: table
+      +schema: MART
+      +tags: mart
+      +docs:
+        node_color: "#C0392B"
+
+seeds:
+  ashby_snowflake:
+    +schema: seeds
+    +file_format: csv
+    +docs:
+      node_color: "#2DC2B8"
