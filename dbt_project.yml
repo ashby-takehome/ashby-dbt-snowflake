@@ -45,3 +45,10 @@ models:
       +tags: mart
       +docs:
         node_color: "#C0392B"
+
+seeds:
+  ashby_snowflake:
+    +schema: seeds
+    +file_format: csv
+    +docs:
+      node_color: "#2DC2B8"

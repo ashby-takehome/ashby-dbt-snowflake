@@ -1,0 +1,66 @@
+version: 2
+
+models:
+  - name: ashby_applications
+    description: This model enriches the application data from the staging models by joining with jobs, sources, source types, teams, and stage groups, and adds additional flags and derived columns for future analysis.
+    columns:
+      - name: organization_id
+        description: Identifier for the organization.
+      - name: organization_name
+        description: Readable name of the organization (as defined by the dummy CSV on the seeds folder).
+      - name: application_id
+        description: Unique identifier for each application.
+      - name: candidate_id
+        description: Identifier for the candidate.
+      - name: job_title
+        description: Title of the job associated with the application.
+      - name: job_function
+        description: Function or role of the job within the organization.
+      - name: job_category
+        description: Category of the job.
+      - name: job_status
+        description: Status of the job.
+      - name: employment_type
+        description: Type of employment.
+      - name: team_name
+        description: Name of the team associated with the job.
+      - name: parent_team_name
+        description: Name of the parent team, if applicable.
+      - name: job_confidentiality
+        description: Indicates whether the job is confidential or regular.
+      - name: application_status
+        description: Status of the application (e.g., active, archived).
+      - name: source_type_title
+        description: Name of the source type.
+      - name: source_title
+        description: Name of the source.
+      - name: current_stage_group_title
+        description: Name of the current stage group.
+      - name: current_stage_group_type
+        description: Type of the current stage group.
+      - name: applicant_re_applied_flag
+        description: Flag indicating whether the same applicant applied for the same job more than once.
+      - name: application_order
+        description: Rank/order of applications by the same candidate for the same job.
+
+  - name: ashby_stage_transitions
+    description: This model enriches the stage transition data from the staging models by joining with stage groups and calculates the time in process for each transition.
+    columns:
+      - name: organization_id
+        description: Identifier for the organization.
+      - name: application_id
+        description: Unique identifier for each application.
+      - name: stage_transition_id
+        description: Unique identifier for each stage transition.
+      - name: stage_group_order
+        description: Order of the stage group.
+      - name: stage_group_title
+        description: Name of the stage group.
+      - name: stage_group_type
+        description: Type of the stage group.
+      - name: entered_stage_at
+        description: Timestamp when the stage was entered.
+      - name: left_stage_at
+        description: Timestamp when the stage was left.
+      - name: time_in_process_days
+        description: The time spent in the stage, calculated in days.
