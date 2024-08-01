@@ -6,14 +6,14 @@ models:
     columns:
       - name: application_id
         description: Unique identifier for each application.
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: organization_id
         description: Identifier for the organization to which the application belongs.
       - name: job_id
         description: Identifier for the job associated with the application.
-        tests:
+        data_tests:
           - relationships:
               to: ref('stg_jobs')
               field: job_id
@@ -21,18 +21,18 @@ models:
         description: Identifier for the candidate who submitted the application.
       - name: current_interview_stage_id
         description: Identifier for the current interview stage of the application.
-        tests:
+        data_tests:
           - relationships:
               to: ref('stg_stage_groups')
               field: stage_id
       - name: application_status
         description: Status of the application (e.g., active, archived).
-        tests:
+        data_tests:
           - accepted_values:
               values: ['archived', 'hired', 'active', 'lead']
       - name: source_id
         description: Identifier for the source from which the application originated.
-        tests:
+        data_tests:
           - relationships:
               to: ref('stg_sources')
               field: source_id
@@ -48,7 +48,7 @@ models:
     columns:
       - name: job_id
         description: Unique identifier for each job.
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: organization_id
@@ -59,7 +59,7 @@ models:
         description: Flag indicating whether the job is confidential (true) or not (false).
       - name: job_status
         description: Status of the job (e.g., open, closed, etc.).
-        tests:
+        data_tests:
           - accepted_values:
               values: ['open', 'closed', 'archived', 'draft']
       - name: job_category
@@ -80,7 +80,7 @@ models:
     columns:
       - name: source_type_id
         description: Unique identifier for each source type.
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: organization_id
@@ -97,7 +97,7 @@ models:
     columns:
       - name: source_id
         description: Unique identifier for each source.
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: organization_id
@@ -116,7 +116,7 @@ models:
     columns:
       - name: stage_id
         description: Unique identifier for each stage.
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: organization_id
@@ -145,7 +145,7 @@ models:
     columns:
       - name: stage_transition_id
         description: Unique identifier for each stage transition.
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: organization_id
@@ -170,7 +170,7 @@ models:
     columns:
       - name: team_id
         description: Unique identifier for each team.
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: organization_id
@@ -189,7 +189,7 @@ models:
     columns:
       - name: user_id
         description: Unique identifier for each user.
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: organization_id
