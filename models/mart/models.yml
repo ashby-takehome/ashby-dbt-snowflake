@@ -10,6 +10,13 @@ models:
         description: Readable name of the organization (as defined by the dummy CSV on the seeds folder).
       - name: application_id
         description: Unique identifier for each application.
+        tests:
+          - unique
+          - not_null
+      - name: application_created_at
+        description: The timestamp of when the application was first created.
+      - name: time_in_process_days
+        description: The time in process (in days) for the entire cycle (applicable to hired and archived applications).
       - name: candidate_id
         description: Identifier for the candidate.
       - name: job_title
@@ -52,6 +59,9 @@ models:
         description: Unique identifier for each application.
       - name: stage_transition_id
         description: Unique identifier for each stage transition.
+        tests:
+          - unique
+          - not_null
       - name: stage_group_order
         description: Order of the stage group.
       - name: stage_group_title

@@ -5,14 +5,38 @@
 {% set teams = ref("stg_teams") %}
 {% set stage_groups = ref("stg_stage_groups") %}
 {% set organization_names_seed = ref("organization_names") %}
+{% set stage_transitions = ref("stg_stage_transitions") %}
 
-WITH applications_enriched AS
+WITH application_time_in_process AS
+(
+    SELECT
+        st.organization_id,
+        st.application_id,
+        -- Calculating the "Time In Process" for the entire application cycle
+        SUM(st.time_in_process_days) AS time_in_process_days
+    
+    FROM {{ stage_transitions }} AS st
+
+    LEFT JOIN {{applications}} AS a
+    USING (organization_id, application_id)
+
+    WHERE 
+        -- Calculating the aaplication-level Time in Process for hired and archived applications only
+        LOWER(a.application_status) IN ('hired', 'archived')
+    
+    GROUP BY 1,2
+),
+
+applications_enriched AS
 (
     SELECT 
         a.organization_id,
         ons.organization_name,
         a.application_id,
         a.candidate_id,
+        a.application_created_at,
+        tip.time_in_process_days,
+        a.job_id,
         j.job_title,
         j.job_function,
         j.job_category,
@@ -26,7 +50,9 @@ WITH applications_enriched AS
         -- Replacing boolean with readable types for ease of visulaization
         IFF(j.is_confidential_flag, 'Confidential', 'Regular') AS job_confidentiality,
 
-        a.application_status,
+        -- Standardizing the casing to be proper case
+        INITCAP(a.application_status) AS application_status,
+
         st.source_type_title,
         s.source_title,
         sg.stage_group_title AS current_stage_group_title,
@@ -61,9 +87,19 @@ WITH applications_enriched AS
     LEFT JOIN {{ teams }} AS pt 
     ON pt.team_id = t.parent_team_id AND pt.organization_id = t.organization_id
 
-    -- Joining with stage groups table to pull the current interview stage details (to flag hired ones)
+    -- Joining with stage groups table to pull the current interview stage details
     LEFT JOIN {{ stage_groups }} AS sg
     ON sg.stage_id = a.current_interview_stage_id AND sg.organization_id = a.organization_id
+
+    -- Joining with CTE above to add the "Time In Process" for the entire application cycle
+    LEFT JOIN application_time_in_process AS tip
+    ON tip.application_id = a.application_id AND tip.organization_id = a.organization_id
+
+    WHERE
+        -- Excluding Draft jobs (assuming that draft jobs are not posted and safe to exclude)
+        j.job_status != 'draft'
+        -- Excluding the applications in "Lead" state (assuming that they are not yet active applications)
+        AND a.application_status != 'lead'
 )
 
 SELECT 

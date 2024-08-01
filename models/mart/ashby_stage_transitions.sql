@@ -8,17 +8,15 @@ WITH stage_transitions_enriched AS
        st.organization_id,
        application_id,
        stage_transition_id,
-       
+       entered_stage_at,
+       left_stage_at,
+       time_in_process_days,
+
        -- Focusing on stage groups only
        stage_group_order,
        stage_group_title,
-       stage_group_type,
-       entered_stage_at,
-       left_stage_at,
-       
-       -- Calculating the Time In Process (in days)
-       TIMESTAMPDIFF('days', entered_stage_at, IFNULL(left_stage_at, CURRENT_TIMESTAMP())) AS time_in_process_days
-    
+       stage_group_type
+
     FROM {{ stage_transitions }} AS st
 
     LEFT JOIN {{ stage_groups }} AS sg
@@ -26,7 +24,7 @@ WITH stage_transitions_enriched AS
 
     WHERE 
         -- Excluding transitions to 'Archived' or 'Hired' stage as they are the final stages to the hiring cycle and stay open
-        stage_group_type NOT IN ('Archived', 'Hired')
+        LOWER(stage_group_type) NOT IN ('archived', 'hired')
 )
 
 SELECT 
